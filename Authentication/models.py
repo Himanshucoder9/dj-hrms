@@ -7,13 +7,13 @@ from Master.models import TimeStamp
 # Create your models here.
 
 class CompanyType(TimeStamp):
-    title = models.CharField(_('Company Type'), max_length=255, unique=True)
+    name = models.CharField(_('Company Type'), max_length=255, unique=True)
 
     def __str__(self):
-        return self.title
+        return self.name
 
     def __repr__(self):
-        return f"<CompanyType(title={self.title})>"
+        return f"<CompanyType(title={self.name})>"
 
     class Meta:
         verbose_name = _('Company Type')
@@ -23,7 +23,8 @@ class CompanyType(TimeStamp):
 class Company(TimeStamp):
     company_code = models.CharField(_("Company Code"), max_length=6, unique=True)
     name = models.CharField(_('Company Name'), max_length=255, unique=True)
-    company_type = models.ForeignKey(_('Company Type'), CompanyType, on_delete=models.SET_NULL, blank=True, null=True)
+    company_type = models.ForeignKey(CompanyType, on_delete=models.SET_NULL, blank=True, null=True,
+                                     verbose_name=_('Company Type'))
     registered_office_address = models.TextField(_('Registered Office Address'))
 
     def __str__(self):
@@ -31,7 +32,7 @@ class Company(TimeStamp):
 
     def __repr__(self):
         return f"<Company(name={self.name})>"
-    
+
     class Meta:
         verbose_name = _('Company')
         verbose_name_plural = _('Companies')

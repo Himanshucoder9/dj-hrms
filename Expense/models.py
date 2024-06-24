@@ -8,7 +8,7 @@ from imagekit.models import ProcessedImageField
 # Create your models here.
 
 class Head(TimeStamp):
-    company = models.ForeignKey(_("Company"), 'Authentication.Company', on_delete=models.CASCADE)
+    company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     expense_head = models.CharField(_("expense head"), max_length=250, validators=[alphanumeric('Expense head')])
     note = models.TextField(_("note"), blank=True, null=True)
 
@@ -24,7 +24,7 @@ class Head(TimeStamp):
 
 
 class Expense(TimeStamp):
-    company = models.ForeignKey(_("Company"), 'Authentication.Company', on_delete=models.CASCADE)
+    company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     expense_head = models.ForeignKey(Head, on_delete=models.CASCADE, verbose_name="Expense head")
     name = models.CharField(_("name"), max_length=250, validators=[alphabet('Name')])
     invoice_no = models.CharField(_("invoice number"), max_length=300, blank=True, null=True,
