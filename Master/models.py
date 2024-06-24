@@ -11,4 +11,3 @@ class TimeStamp(models.Model):
         verbose_name = 'TimeStamp'
         verbose_name_plural = 'TimeStamps'
         abstract = True
-
