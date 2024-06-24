@@ -28,7 +28,7 @@ class Company(TimeStamp):
         return f"{self.company_code} - {self.name}"
     
     def __repr__(self):
-        return f"<CompanyType(title={self.title})>"
+        return f"<Company(name={self.name})>"
     
     class Meta:
         verbose_name = _('Company')
