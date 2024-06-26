@@ -1,5 +1,8 @@
 from django.core import validators
 from django.core.validators import RegexValidator
+import re
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 
 phone_regex = RegexValidator(
@@ -42,3 +45,12 @@ def numeric(msg):
     nerror = validators.RegexValidator(
         r'^[0-9]*$', message=f"{msg} must be number!!!")
     return nerror
+
+
+def pan_validator(value):
+    pattern = re.compile(r'^[A-Z]{5}[0-9]{4}[A-Z]$')
+    if not pattern.match(str(value)):
+        raise ValidationError(
+            _('Enter a valid PAN card number. Example: ABCDE1234F'),
+            code='invalid_pan_number'
+        )
