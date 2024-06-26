@@ -33,9 +33,9 @@ class Expense(TimeStamp):
     date = models.DateField(_("date"))
     amount = models.DecimalField(_("amount"), max_digits=10, decimal_places=2)
     bill = ProcessedImageField(
-        _("Attach Document"),
+        verbose_name=_("Attach Document"),
         upload_to=expense_directory_path,
-        options={'quality': 50}, blank=True, null=True,
+        options={'quality': 70}, blank=True, null=True,
     )
     note = models.TextField(_("note"), blank=True, null=True)
 
