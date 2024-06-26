@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from Master.models import TimeStamp
 from Master.myvalidator import alphanumeric, alphabet
 from imagekit.models import ProcessedImageField
+from Master.uploader import expense_directory_path
 
 
 # Create your models here.
@@ -33,8 +34,7 @@ class Expense(TimeStamp):
     amount = models.DecimalField(_("amount"), max_digits=10, decimal_places=2)
     bill = ProcessedImageField(
         _("Attach Document"),
-        upload_to='profile',
-        format='WEBP',
+        upload_to=expense_directory_path,
         options={'quality': 50}, blank=True, null=True,
     )
     note = models.TextField(_("note"), blank=True, null=True)
