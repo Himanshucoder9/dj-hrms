@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{% if update %}Update Subject Group{% else %}Add Subject Group{% endif %}{% endblock title %}
+
+{% block body %}
+{% load crispy_forms_tags %}
+   {% include 'utils/navbar.html' %}
+   {% include 'utils/sidebar.html' %}
+<main id="main" class="main">
+    {% if update %}
+{% include 'utils/breadcrumb.html' with page='Update Subject Group'  link1='Subject Group Master' link2='Update Subject Group'  link3=update_id%}
+{% else %}
+{% include 'utils/breadcrumb.html' with page='Add Subject Group'  link1='Subject Group Master' link2='Add Subject Group' %}
+    {% endif %}
+<section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                  {% if update %}
+                        Update Subject Group
+                  {% else %}
+                        Add Subject Group
+                  {% endif %}
+              </h5>
+
+              <form class="row g-3" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                <div class="col-md-12">
+                  {{form.name|as_crispy_field}}
+                </div>
+                <div class="col-md-12">
+                  {{form.classes|as_crispy_field}}
+                </div>
+                <div class="col-md-12">
+                  {{form.subject|as_crispy_field}}
+                </div>
+                <div class="col-md-12">
+                  {{form.note|as_crispy_field}}
+                </div>
+                {% include 'utils/form_button.html' %}
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+</main>
+   {% include 'utils/footer.html' %}
+{% endblock body %}

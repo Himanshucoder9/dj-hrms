@@ -1,0 +1,159 @@
+<!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <p class="nav-link bg-secondary text-white"><i class="bi bi-speedometer2 text-white"></i> Dashboard</p>
+       <li class="nav-item">
+        <a class="nav-link collapsed {% if request.path == '/' %}active{% endif %}" href="{% url 'main:dashboard' %}">
+          <i class="bi bi-caret-right-fill"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+<!--  Academic  -->
+      <p class="nav-link bg-secondary text-white"><i class="bi bi-mortarboard text-white"></i> Academic</p>
+      <li class="nav-item">
+        <a class="nav-link collapsed {% if request.path == '/academic/class-add/' or request.path == '/academic/class-detail/' or update_url == 'class_update' %}active{% endif %}" data-bs-target="#class-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-caret-right-fill "></i><span>Class Master</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="class-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'academic:class' %}" class="{% if request.path == '/academic/class-add/' %} active-link{% endif%}">
+              <i class="bi bi-circle"></i><span>Add Class</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'academic:class_detail' %}" class="{% if request.path == '/academic/class-detail/'  %} active-link{% endif%}">
+              <i class="bi bi-circle"></i><span>Class Details</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed {% if request.path == '/academic/section-add/' or request.path == '/academic/section-detail/' or update_url == 'section_update' %}active{% endif %}" data-bs-target="#section-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-caret-right-fill"></i><span>Section Master</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="section-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'academic:section' %}" class="{% if request.path == '/academic/section-add/' %} active-link{% endif%}">
+              <i class="bi bi-circle"></i><span>Add Section</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'academic:section_detail' %}" class="{% if request.path == '/academic/section-detail/' %} active-link{% endif%}">
+              <i class="bi bi-circle"></i><span>Section Details</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed {% if request.path == '/academic/house-add/' or request.path == '/academic/house-detail/' or update_url == 'house_update' %}active{% endif %}" data-bs-target="#house-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-caret-right-fill"></i><span>House Master</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="house-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'academic:house' %}" class="{% if request.path == '/academic/house-add/' %} active-link{% endif%}">
+              <i class="bi bi-circle"></i><span>Add House</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'academic:house_detail' %}" class="{% if request.path == '/academic/house-detail/' %} active-link{% endif%}">
+              <i class="bi bi-circle"></i><span>House Details</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed {% if request.path == '/academic/subject-add/' or request.path == '/academic/subject-detail/' or update_url == 'subject_update' %}active{% endif %}" data-bs-target="#subject-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-caret-right-fill"></i><span>Subject Master</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="subject-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'academic:subject' %}" class="{% if request.path == '/academic/subject-add/' %} active-link{% endif%}">
+              <i class="bi bi-circle"></i><span>Add Subject</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'academic:subject_detail' %}" class="{% if request.path == '/academic/subject-detail/' %} active-link{% endif%}">
+              <i class="bi bi-circle"></i><span>Subject Details</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed {% if request.path == '/academic/subject-group-add/' or request.path == '/academic/subject-group-detail/' or update_url == 'subject_group_update' %}active{% endif %}" data-bs-target="#subject-group-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-caret-right-fill"></i><span>Subject Group Master</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="subject-group-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'academic:subject_group' %}" class="{% if request.path == '/academic/subject-group-add/' %} active-link{% endif%}">
+              <i class="bi bi-circle"></i><span>Add Subject Group</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'academic:subject_group_detail' %}" class="{% if request.path == '/academic/subject-group-detail/' %} active-link{% endif%}">
+              <i class="bi bi-circle"></i><span>Subject Group Details</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+<!--  Expense  -->
+      <p class="nav-link bg-secondary text-white"><i class="bi bi-cash text-white"></i> Expense</p>
+      <li class="nav-item">
+        <a class="nav-link collapsed {% if request.path == '/expense/expense-head-add/' or request.path == '/expense/expense-head-detail/' or update_url == 'expense_head_update' %}active{% endif %}" data-bs-target="#expense-head-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-caret-right-fill"></i><span>Expense Head Master</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="expense-head-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'expense:head' %}" class="{% if request.path == '/expense/expense-head-add/'%}active-link{% endif %}">
+              <i class="bi bi-circle"></i><span>Add Expense Head</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'expense:head_detail' %}" class="{% if request.path == '/expense/expense-head-detail/'%}active-link{% endif %}">
+              <i class="bi bi-circle"></i><span>Expense Head Details</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed {% if request.path == '/expense/expense-add/' or request.path == '/expense/expense-detail/' or update_url == 'expense_update' %}active{% endif %}" data-bs-target="#expense-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-caret-right-fill"></i><span>Expense Master</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="expense-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li >
+            <a href="{% url 'expense:expense' %}" class="{% if request.path == '/expense/expense-add/'%}active-link{% endif %}" >
+              <i class="bi bi-circle"></i><span >Add Expense</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'expense:expense_detail' %}" class="{% if request.path == '/expense/expense-detail/'%}active-link{% endif %}">
+              <i class="bi bi-circle"></i><span>Expense Details</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+<!--  Student  -->
+      <p class="nav-link bg-secondary text-white"><i class="bi bi-person text-white"></i> Student</p>
+      <li class="nav-item">
+        <a class="nav-link collapsed {% if request.path == '/student/student-add/' or request.path == '/student/student-detail/' or update_url == 'student_update' %}active{% endif %}" data-bs-target="#admission-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-caret-right-fill"></i><span>Student Master</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="admission-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'student:student' %}" class="{% if request.path == '/student/student-add/'%}active-link{% endif %}">
+              <i class="bi bi-circle"></i><span>Admission</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'student:student_detail' %}" class="{% if request.path == '/student/student-detail/'%}active-link{% endif %}">
+              <i class="bi bi-circle"></i><span>Student Details</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+
+    </ul>
+
+  </aside><!-- End Sidebar-->

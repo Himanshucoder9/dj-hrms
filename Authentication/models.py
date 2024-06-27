@@ -6,7 +6,6 @@ from Master.models import TimeStamp
 from Master.myvalidator import mobile_validator, numeric, minimum, maximum, pan_validator
 from General.models import Department, Designation
 from imagekit.models import ProcessedImageField
-
 from Master.uploader import company_directory_path, expense_directory_path
 
 

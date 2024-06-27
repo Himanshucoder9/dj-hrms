@@ -1,0 +1,537 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Student Profile{% endblock title %}
+
+{% block body %}
+   {% include 'utils/navbar.html' %}
+   {% include 'utils/sidebar.html' %}
+<main id="main" class="main" xmlns="http://www.w3.org/1999/html">
+{% include 'utils/breadcrumb.html' with page='Student Profile' link1='Student Profile' link2=student.admission_no %}
+
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column">
+
+              <img src="{{student.photo.url}}" alt="Profile" class="rounded mx-auto">
+              <h2 class="text-center mb-3">{{student.first_name}} {{student.middle_name}} {{student.last_name}}</h2>
+                  <div class="row">
+                    <div class=" col fw-bold ">Roll Number</div>
+                    <div class="col ">{{student.roll_no}}</div>
+                  </div>
+              <hr class="hr" />
+              <div class="row">
+                    <div class=" col fw-bold ">Class</div>
+                    <div class="col ">{{student.classes.name}}</div>
+                  </div>
+              <hr class="hr" />
+
+              <div class="row">
+                    <div class=" col fw-bold ">Section</div>
+                    <div class="col ">{{student.section}}</div>
+                  </div>
+              <hr class="hr" />
+
+              <div class="row">
+                    <div class=" col fw-bold ">House</div>
+                    <div class="col ">{{student.house}}</div>
+                  </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#bank">Bank Details</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Documents</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#documents">Documents</button>
+                </li>
+                <li class="ms-auto">
+                        <a class="text-warning fw-bold h5"><i class="bi bi-filetype-pdf"></i></a>
+                        <a href="{% url 'student:student_update' student.slug %}" class="text-success fw-bold h5"><i class="bi bi-pencil-square"></i></a>
+                        <a href="{% url 'student:student_delete' slug=student.slug  %}" class="text-danger fw-bold h5"><i class="bi bi-trash"></i></a>
+                </li>
+              </ul>
+
+              <div class="tab-content pt-2">
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                       <p class="bg-secondary text-white rounded shadow p-3 my-3">Basic Information </p>
+                <div class="rounded shadow p-3">
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">Admission Number</div>
+                    <div class="col-lg-7 col-md-8">{{student.admission_no}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Admission Date</div>
+                    <div class="col-lg-7 col-md-8">{{student.admission_date}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Academic Session</div>
+                    <div class="col-lg-7 col-md-8">{{student.session}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Email</div>
+                    <div class="col-lg-7 col-md-8">{{student.email}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Contact Number</div>
+                    <div class="col-lg-7 col-md-8">{{student.mobile}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Date Of Birth</div>
+                    <div class="col-lg-7 col-md-8">{{student.dob}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Gender</div>
+                    <div class="col-lg-7 col-md-8">{{student.get_gender_display}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Blood Group</div>
+                    <div class="col-lg-7 col-md-8">{{student.get_blood_display}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Height</div>
+                    <div class="col-lg-7 col-md-8">{{student.height}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Weight</div>
+                    <div class="col-lg-7 col-md-8">{{student.weight}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Category</div>
+                    <div class="col-lg-7 col-md-8">{{student.get_category_display}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Religion</div>
+                    <div class="col-lg-7 col-md-8">{{student.get_religion_display}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Caste</div>
+                    <div class="col-lg-7 col-md-8">{{student.caste}}</div>
+                  </div>
+                </div>
+      <p class="bg-secondary text-white rounded shadow p-3 my-3">Parent/Guardian Details</p>
+                  <div class="rounded shadow p-3">
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">Father's Name</div>
+                    <div class="col-lg-7 col-md-8">{{student.father_name}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">Father's Contact Number</div>
+                    <div class="col-lg-7 col-md-8">{{student.father_phone}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">Father's email</div>
+                    <div class="col-lg-7 col-md-8 text-capitalize">{{student.father_phone}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">Father's Occupation</div>
+                    <div class="col-lg-7 col-md-8 text-capitalize">{{student.father_occupation}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">mother's Name</div>
+                    <div class="col-lg-7 col-md-8">{{student.mother_name}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">mother's Contact Number</div>
+                    <div class="col-lg-7 col-md-8">{{student.mother_phone}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">mother's email</div>
+                    <div class="col-lg-7 col-md-8 text-capitalize">{{student.mother_phone}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">mother's Occupation</div>
+                    <div class="col-lg-7 col-md-8 text-capitalize">{{student.mother_occupation}}</div>
+                  </div>
+                     <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">guardian's Name</div>
+                    <div class="col-lg-7 col-md-8">{{student.guardian_name}}</div>
+                  </div>
+                    <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">Guardian's relation</div>
+                    <div class="col-lg-7 col-md-8 text-capitalize">{{student.guardian_relation}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">guardian's Contact Number</div>
+                    <div class="col-lg-7 col-md-8">{{student.guardian_phone}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">guardian's email</div>
+                    <div class="col-lg-7 col-md-8 text-capitalize">{{student.guardian_phone}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">guardian's Occupation</div>
+                    <div class="col-lg-7 col-md-8 text-capitalize">{{student.guardian_occupation}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">guardian's Address</div>
+                    <div class="col-lg-7 col-md-8 text-capitalize">{{student.guardian_address}}</div>
+                  </div>
+
+                </div>
+<p class="bg-secondary text-white rounded shadow p-3 my-3">Address Details</p>
+                  <div class="rounded shadow p-3">
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">City</div>
+                    <div class="col-lg-7 col-md-8">{{student.city}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">District</div>
+                    <div class="col-lg-7 col-md-8">{{student.ditrict}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">Pincode</div>
+                    <div class="col-lg-7 col-md-8 text-capitalize">{{student.pincode}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">State</div>
+                    <div class="col-lg-7 col-md-8 text-capitalize">{{student.state}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">Current address</div>
+                    <div class="col-lg-7 col-md-8">{{student.current_address}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">permanent address</div>
+                    <div class="col-lg-7 col-md-8">{{student.permanent_address}}</div>
+                  </div>
+                </div>
+            <p class="bg-secondary text-white rounded shadow p-3 my-3">Miscellaneous Details</p>
+                  <div class="rounded shadow p-3">
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">Aadhar Number</div>
+                    <div class="col-lg-7 col-md-8">{{student.aadhar_no}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">SSMID</div>
+                    <div class="col-lg-7 col-md-8">{{student.ssmid}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">handicapped</div>
+                    <div class="col-lg-7 col-md-8 text-capitalize">{% if student.handicapped == True %}YES{% else %}NO{% endif %}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">Sports quota</div>
+                    <div class="col-lg-7 col-md-8 text-capitalize">{% if student.sport_quota == True %}YES{% else %}NO{% endif %}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">RTE</div>
+                    <div class="col-lg-7 col-md-8">{% if student.rte == True %}YES{% else %}NO{% endif %}</div>
+                  </div>
+                </div>
+                </div>
+                <div class="tab-pane fade profile-overview pt-3" id="bank">
+                    <p class="bg-secondary text-white rounded shadow p-3 my-3">Bank Details</p>
+                <div class="rounded shadow p-3">
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label text-capitalize">Bank name</div>
+                    <div class="col-lg-7 col-md-8">{{student.bank_name}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Bank account number</div>
+                    <div class="col-lg-7 col-md-8">{{student.account_no}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">IFSC code</div>
+                    <div class="col-lg-7 col-md-8">{{student.ifsc_code}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Account holder name</div>
+                    <div class="col-lg-7 col-md-8">{{student.account_holder_name}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-5 col-md-4 label">Branch address</div>
+                    <div class="col-lg-7 col-md-8">{{student.bank_address}}</div>
+                  </div>
+                </div>
+
+                </div>
+
+                <div class="tab-pane fade pt-3" id="profile-settings">
+
+                  <!-- Settings Form -->
+                  <form>
+
+                    <div class="row mb-3">
+                      <label text-capitalizefor="fullName" class="col-md-4 col-lg-5 col-form-label">Email Notifications</label>
+                      <div class="col-md-8 col-lg-7">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="changesMade" checked>
+                          <label text-capitalizeclass="form-check-label" for="changesMade">
+                            Changes made to your account
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="newProducts" checked>
+                          <label text-capitalizeclass="form-check-label" for="newProducts">
+                            Information on new products and services
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="proOffers">
+                          <label text-capitalizeclass="form-check-label" for="proOffers">
+                            Marketing and promo offers
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
+                          <label text-capitalizeclass="form-check-label" for="securityNotify">
+                            Security alerts
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                  </form><!-- End settings Form -->
+
+                </div>
+
+                <div class="tab-pane fade pt-3 profile-overview" id="documents">
+                <div class="rounded shadow p-3">
+                  <div class="row">
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">father's photo</p>
+                           {% if student.father_photo %}
+                            <a href="{{student.father_photo.url}}" target="_blank"><img
+                          src="{{student.father_photo.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.father_photo.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">Mother's Photo</p>
+                           {% if student.mother_photo %}
+                            <a href="{{student.mother_photo.url}}" target="_blank"><img
+                          src="{{student.mother_photo.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.mother_photo.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">guardian's photo</p>
+                           {% if student.guardian_photo %}
+                            <a href="{{student.guardian_photo.url}}" target="_blank"><img
+                          src="{{student.guardian_photo.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.guardian_photo.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                  </div>
+                  <div class="row">
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">Aadhar</p>
+                           {% if student.aadhar %}
+                            <a href="{{student.aadhar.url}}" target="_blank"><img
+                          src="{{student.aadhar.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.aadhar.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">SSMID</p>
+                           {% if student.ssmid_img %}
+                            <a href="{{student.ssmid_img.url}}" target="_blank"><img
+                          src="{{student.ssmid_img.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.ssmid_img.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">admission form</p>
+                           {% if student.admission_form %}
+                            <a href="{{student.admission_form.url}}" target="_blank"><img
+                          src="{{student.admission_form.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.admission_form.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                  </div>
+                  <div class="row">
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">birth_certificate</p>
+                           {% if student.birth_certificate %}
+                            <a href="{{student.birth_certificate.url}}" target="_blank"><img
+                          src="{{student.birth_certificate.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.birth_certificate.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">Income Certificate</p>
+                           {% if student.income %}
+                            <a href="{{student.income.url}}" target="_blank"><img
+                          src="{{student.income.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.income.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">caste certificate</p>
+                           {% if student.caste_certificate %}
+                            <a href="{{student.caste_certificate.url}}" target="_blank"><img
+                          src="{{student.caste_certificate.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.caste_certificate.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                  </div>
+                  <div class="row">
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">residence_certificate</p>
+                           {% if student.residence_certificate %}
+                            <a href="{{student.residence_certificate.url}}" target="_blank"><img
+                          src="{{student.residence_certificate.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.residence_certificate.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">Transfer Certificate</p>
+                           {% if student.tc %}
+                            <a href="{{student.tc.url}}" target="_blank"><img
+                          src="{{student.tc.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.tc.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">migration certificate</p>
+                           {% if student.migration_certificate %}
+                            <a href="{{student.migration_certificate.url}}" target="_blank"><img
+                          src="{{student.migration_certificate.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.migration_certificate.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                  </div>
+                  <div class="row">
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">character certificate</p>
+                           {% if student.character_certificate %}
+                            <a href="{{student.character_certificate.url}}" target="_blank"><img
+                          src="{{student.character_certificate.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.character_certificate.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">Previous school report card</p>
+                           {% if student.report_card %}
+                            <a href="{{student.report_card.url}}" target="_blank"><img
+                          src="{{student.report_card.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.report_card.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                       <div class="col-md-4">
+                           <p class="label text-capitalize">grahit_form</p>
+                           {% if student.grahit_form %}
+                            <a href="{{student.grahit_form.url}}" target="_blank"><img
+                          src="{{student.grahit_form.url}}"
+                          class="d-block rounded"
+                          height="100"/>
+                           </a>
+                           <a href="{{student.grahit_form.url}}" target="_blank" class="btn btn-danger mt-2" download><i class="bi bi-cloud-arrow-down-fill"></i></a>
+                           {% else %}
+                           <p>No image to display</p>
+                           {% endif %}
+                </div>
+                  </div>
+
+                </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+{% endblock body %}

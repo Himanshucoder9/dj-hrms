@@ -1,0 +1,374 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{% if update %}Update Student{% else %}Create  Student{% endif %}{% endblock title %}
+
+{% block body %}
+{% load crispy_forms_tags %}
+   {% include 'utils/navbar.html' %}
+   {% include 'utils/sidebar.html' %}
+<main id="main" class="main">
+    {% if update %}
+{% include 'utils/breadcrumb.html' with page='Update Student' link1='Student Master' link2='Update Student' link3=update_id%}
+{% else %}
+{% include 'utils/breadcrumb.html' with page='Create  Student' link1='Student Master' link2='Create Student'%}
+    {% endif %}
+<section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                  {% if update %}
+                        Update Student (Admission Number : {{update_id}})
+                  {% else %}
+                        Create  Student
+                  {% endif %}
+              </h5>
+
+              <form class="row g-3 " method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+      <p class="bg-secondary text-white rounded shadow p-3">Basic Information </p>
+
+                <div class="col-md-4">
+                  {{form.roll_no|as_crispy_field}}
+                </div>
+                <div class="col-md-4">
+                  {{form.admission_no|as_crispy_field}}
+                </div>
+                <div class="col-md-4">
+                  {{form.admission_date|as_crispy_field}}
+                </div>
+                <div class="col-md-4">
+                  {{form.first_name|as_crispy_field}}
+                </div>
+                  <div class="col-md-4">
+                  {{form.middle_name|as_crispy_field}}
+                </div>
+                  <div class="col-md-4">
+                  {{form.last_name|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.email|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.mobile|as_crispy_field}}
+                </div>
+                  <div class="col-md-4">
+                  {{form.session|as_crispy_field}}
+
+                </div>
+                   <div class="col-md-4">
+                  {{form.gender|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.dob|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.blood|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.height|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.weight|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                </div>
+
+
+                <div class="col-md-4">
+                  {{form.classes|as_crispy_field}}
+                </div>
+                <div class="col-md-4">
+                  {{form.section|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.house|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.category|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.religion|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.caste|as_crispy_field}}
+                </div>
+      <p class="bg-secondary text-white rounded shadow p-3">Parent/Guardian Details</p>
+                <div class="col-md-4">
+                  {{form.father_name|as_crispy_field}}
+                </div>
+                  <div class="col-md-4">
+                  {{form.father_email|as_crispy_field}}
+                </div>
+                  <div class="col-md-4">
+                  {{form.father_phone|as_crispy_field}}
+                </div>
+                  <div class="col-md-12">
+                  {{form.father_occupation|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.mother_name|as_crispy_field}}
+                </div>
+                  <div class="col-md-4">
+                  {{form.mother_email|as_crispy_field}}
+                </div>
+                  <div class="col-md-4">
+                  {{form.mother_phone|as_crispy_field}}
+                </div>
+                  <div class="col-md-12">
+                  {{form.mother_occupation|as_crispy_field}}
+                </div>
+                  <div class="col-12">
+                  <label  class="form-label">If Guardian</label>
+                      <div class="d-flex">
+                      <div class="form-check">
+                          <input class="form-check-input" type="radio" value="father" name="user_type" >
+                          <label class="form-check-label">Father</label>
+                        </div>
+                        <div class="form-check mx-2">
+                          <input class="form-check-input" type="radio" value="mother" name="user_type" >
+                          <label class="form-check-label">Mother</label>
+                        </div>
+                       <div class="form-check">
+                          <input class="form-check-input" type="radio" value="other" name="user_type" >
+                          <label class="form-check-label">Other</label>
+                        </div>
+                          </div>
+                </div>
+                  <div id="guardian-fields" class="row mt-2 d-none">
+                   <div class="col-md-4">
+                  {{form.guardian_name|as_crispy_field}}
+                </div>
+                  <div class="col-md-4">
+                  {{form.guardian_email|as_crispy_field}}
+                </div>
+                  <div class="col-md-4">
+                  {{form.guardian_phone|as_crispy_field}}
+                </div>
+                  <div class="col-md-4">
+                  {{form.guardian_occupation|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.guardian_relation|as_crispy_field}}
+                </div>
+                   <div class="col-md-12">
+                  {{form.guardian_address|as_crispy_field}}
+                </div>
+                  </div>
+      <p class="bg-secondary text-white rounded shadow p-3">Bank Details</p>
+                   <div class="col-md-4">
+                  {{form.bank_name|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.account_no|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.ifsc_code|as_crispy_field}}
+                </div>
+                   <div class="col-md-12">
+                  {{form.account_holder_name|as_crispy_field}}
+                </div>
+                  <div class="col-md-12">
+                  {{form.bank_address|as_crispy_field}}
+                </div>
+      <p class="bg-secondary text-white rounded shadow p-3">Address Details</p>
+                  <div class="col-md-4">
+                  {{form.city|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.district|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                  {{form.pincode|as_crispy_field}}
+                </div>
+                   <div class="col-md-12">
+                  {{form.state|as_crispy_field}}
+                </div>
+                   <div class="col-md-6">
+                  {{form.current_address|as_crispy_field}}
+                </div>
+                   <div class="col-md-6">
+                  {{form.permanent_address|as_crispy_field}}
+                </div>
+      <p class="bg-secondary text-white rounded shadow p-3">Miscellaneous Details</p>
+                <div class="col-md-6">
+                  {{form.aadhar_no|as_crispy_field}}
+                </div>
+                  <div class="col-md-6">
+                  {{form.ssmid|as_crispy_field}}
+                </div>
+
+                <div class="col-md-4">
+                  {{form.handicapped|as_crispy_field}}
+                </div>
+                  <div class="col-md-4">
+                  {{form.sport_quota|as_crispy_field}}
+                </div>
+                  <div class="col-md-4">
+                  {{form.rte|as_crispy_field}}
+                </div>
+      <p class="bg-secondary text-white rounded shadow p-3">Upload Documents</p>
+                <div class="col-md-4">
+                     <img
+                          {% if update %}{% if photo %}src="{{photo.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.photo|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if father_photo %}src="{{father_photo.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.father_photo|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if mother_photo %}src="{{mother_photo.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.mother_photo|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if guardian_photo %}src="{{guardian_photo.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.guardian_photo|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if admission_form %}src="{{admission_form.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.admission_form|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if aadhar %}src="{{aadhar.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.aadhar|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if ssmid_img %}src="{{ssmid_img.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.ssmid_img|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if birth_certificate %}src="{{birth_certificate.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.birth_certificate|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if income %}src="{{income.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.income|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if caste_certificate %}src="{{caste_certificate.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.caste_certificate|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if residence %}src="{{residence.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.residence|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if report_card %}src="{{report_card.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.report_card|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if tc %}src="{{tc.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.tc|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if migration %}src="{{migration.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.migration|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if character %}src="{{character.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.character|as_crispy_field}}
+                </div>
+                   <div class="col-md-4">
+                     <img
+                          {% if update %}{% if grahit_form %}src="{{grahit_form.url}}"{% else %}src="#"{% endif %}{% endif %} src="#"
+                          alt="Preview Image"
+                          class="previewImage d-block rounded"
+                          height="100"
+                    />
+                  {{form.grahit_form|as_crispy_field}}
+                </div>
+                   <div class="col-md-8">
+                  {{form.note|as_crispy_field}}
+                </div>
+
+
+                {% include 'utils/form_button.html' %}
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+</main>
+   {% include 'utils/footer.html' %}
+
+
+{% endblock body %}
