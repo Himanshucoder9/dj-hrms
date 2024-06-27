@@ -2,12 +2,13 @@ from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from Authentication.managers import UserManager
 from Master.models import TimeStamp
 from Master.myvalidator import mobile_validator, numeric, minimum, maximum, pan_validator
 from General.models import Department, Designation
 from imagekit.models import ProcessedImageField
-
-from Master.uploader import company_directory_path, expense_directory_path
+from django.contrib.auth.hashers import check_password, make_password
+from Master.uploader import company_directory_path, expense_directory_path, employee_directory_path
 
 
 class CompanyType(TimeStamp):
@@ -44,7 +45,7 @@ class Company(TimeStamp):
         verbose_name_plural = _('Companies')
 
 
-class Employee(AbstractUser, PermissionsMixin):
+class User(AbstractUser, PermissionsMixin):
     ROLE_CHOICES = (
         ('Admin', 'Admin'),
         ('Accountant', 'Accountant'),
@@ -58,6 +59,38 @@ class Employee(AbstractUser, PermissionsMixin):
         ('Female', 'Female'),
         ('Other', 'Other'),
     )
+    username = None
+    role = models.CharField(_('Role'), max_length=50, choices=ROLE_CHOICES, default='Employee')
+    first_name = models.CharField(_('First Name'), max_length=255)
+    middle_name = models.CharField(_('Middle Name'), max_length=255, blank=True, null=True)
+    last_name = models.CharField(_('Last Name'), max_length=255, blank=True, null=True)
+    email = models.EmailField(_('Email'), max_length=255, unique=True)
+    phone = models.CharField(
+        _("Mobile Number"),
+        max_length=13,
+        validators=[mobile_validator],
+        help_text="Alphabets and special characters are not allowed (eg.+911234567890).",
+    )
+    gender = models.CharField(_('Gender'), max_length=50, choices=GENDER_CHOICES)
+    dob = models.DateField(_('Date of Birth'), blank=True, null=True)
+
+    objects = UserManager()
+    EMAIL_FIELD = 'email'
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'phone']
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+    def __repr__(self):
+        return f"<User(email={self.email})>"
+
+    class Meta:
+        verbose_name = _('User')
+        verbose_name_plural = _('Users')
+
+
+class Employee(User):
     MARITAL_CHOICES = (
         ('Married', 'Married'),
         ('Single', 'Single'),
@@ -67,17 +100,6 @@ class Employee(AbstractUser, PermissionsMixin):
     )
     company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name=_('Company'))
     staff_id = models.CharField(_('Staff ID'), max_length=255, unique=True)
-    role = models.CharField(_('Role'), max_length=50, choices=ROLE_CHOICES, default='Employee')
-    first_name = models.CharField(_('First Name'), max_length=255)
-    middle_name = models.CharField(_('Middle Name'), max_length=255, blank=True, null=True)
-    last_name = models.CharField(_('Last Name'), max_length=255, blank=True, null=True)
-    email = models.EmailField(_('Email'), max_length=255)
-    phone = models.CharField(
-        _("Mobile Number"),
-        max_length=13,
-        validators=[mobile_validator],
-        help_text="Alphabets and special characters are not allowed (eg.+911234567890).",
-    )
     alt_phone = models.CharField(
         _("Emergency Mobile Number"),
         max_length=13,
@@ -85,27 +107,39 @@ class Employee(AbstractUser, PermissionsMixin):
         help_text="Alphabets and special characters are not allowed (eg.+911234567890).",
         blank=True, null=True
     )
-    gender = models.CharField(_('Gender'), max_length=50, choices=GENDER_CHOICES)
-    dob = models.DateField(_('Date of Birth'), blank=True, null=True)
+    photo = ProcessedImageField(upload_to=employee_directory_path, options={'quality': 70}, blank=True, null=True)
     marital_status = models.CharField(_('Marital Status'), max_length=50, choices=MARITAL_CHOICES)
-    department = models.ForeignKey(Department, on_delete=models.SET_NULL, blank=True, null=True,
-                                   verbose_name=_('Department'))
-    designation = models.ForeignKey(Designation, on_delete=models.SET_NULL, blank=True, null=True,
-                                    verbose_name=_('Designation'))
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name=_('Department'))
+    designation = models.ForeignKey(Designation, on_delete=models.CASCADE, verbose_name=_('Designation'))
     father_name = models.CharField(_('Father Name'), max_length=255, blank=True, null=True)
     mother_name = models.CharField(_('Mother Name'), max_length=255, blank=True, null=True)
     joining_date = models.DateField(_('Joining Date'), blank=True, null=True)
-    photo = ProcessedImageField(upload_to='employee_photo/', options={'quality': 70}, blank=True, null=True)
     contact = models.CharField(_('Contact'), max_length=255, blank=True, null=True)
     current_address = models.TextField(_('Current Address'))
     permanent_address = models.TextField(_('Permanent Address'))
-    qualification = models.CharField(_('Qualification'), blank=True, null=True)
 
     def __str__(self):
         return self.staff_id
 
     def __repr__(self):
         return f"<Employee(staff_id={self.staff_id})>"
+
+    def save(self, *args, **kwargs):
+        if self.pk is None or not Employee.objects.filter(pk=self.pk).exists():
+            self.password = make_password(self.password)
+        else:
+            orig = Employee.objects.get(pk=self.pk)
+            if orig.password != self.password:
+                self.password = make_password(self.password)
+        super().save(*args, **kwargs)
+    @classmethod
+    def authenticate(cls, company_code, staff_id, password):
+        try:
+            employee = cls.objects.get(company__company_code=company_code, staff_id=staff_id)
+            if check_password(password, employee.password):
+                return employee
+        except cls.DoesNotExist:
+            return None
 
     class Meta:
         verbose_name = _('Employee')
