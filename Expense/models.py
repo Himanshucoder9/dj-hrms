@@ -1,3 +1,4 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from Master.models import TimeStamp
@@ -32,11 +33,11 @@ class Expense(TimeStamp):
                                   validators=[alphanumeric('Invoice number')])
     date = models.DateField(_("date"))
     amount = models.DecimalField(_("amount"), max_digits=10, decimal_places=2)
-    bill = ProcessedImageField(
-        verbose_name=_("Attach Document"),
+    bill = models.FileField(
+        verbose_name=_("Bill"),
         upload_to=expense_directory_path,
-        options={'quality': 70}, blank=True, null=True,
-    )
+        validators=[FileExtensionValidator(allowed_extensions=['doc', 'docx', 'pdf', 'png', 'jpg', 'jpeg', 'webp'])],
+        help_text="Upload document..", )
     note = models.TextField(_("note"), blank=True, null=True)
 
     class Meta:
