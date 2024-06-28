@@ -40,6 +40,7 @@ class Expense(TimeStamp):
         help_text="Upload document..", )
     note = models.TextField(_("note"), blank=True, null=True)
     is_paid = models.BooleanField(_("is paid"), default=False)
+
     class Meta:
         verbose_name = _("Expense")
         verbose_name_plural = _("Expenses")

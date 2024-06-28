@@ -22,7 +22,7 @@ class BreakType(TimeStamp):
 
 class Break(models.Model):
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
-    employee = models.ForeignKey('Authentication.Employee', on_delete=models.CASCADE, verbose_name=_("Employee"))
+    staff = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, verbose_name=_("Staff"))
     start_time = models.TimeField(_("Start Time"))
     end_time = models.TimeField(_("End Time"))
     break_type = models.ForeignKey(BreakType, on_delete=models.SET_NULL, blank=True, null=True,
@@ -49,7 +49,7 @@ class Attendance(models.Model):
         ('holiday', 'Holiday'),
     )
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
-    employee = models.ForeignKey('Authentication.Employee', on_delete=models.CASCADE, verbose_name=_("Employee"))
+    staff = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, verbose_name=_("Staff"))
     date = models.DateField(_("Date"))
     check_in = models.DateTimeField(null=True, blank=True, verbose_name=_("Check In"))
     check_out = models.DateTimeField(null=True, blank=True, verbose_name=_("Check Out"))
@@ -62,7 +62,7 @@ class Attendance(models.Model):
         return self.status
 
     def __repr__(self):
-        return f"<Attendance(employee={self.employee})>"
+        return f"<Attendance(staff={self.staff})>"
 
     class Meta:
         verbose_name = _("Attendance")
@@ -91,7 +91,7 @@ class LeaveRecord(TimeStamp):
         ('rejected', 'Rejected'),
     )
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
-    employee = models.ForeignKey('Authentication.Employee', on_delete=models.CASCADE, verbose_name=_("Employee"))
+    staff = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, verbose_name=_("Staff"))
     leave_type = models.ForeignKey(LeaveType, on_delete=models.SET_NULL, blank=True, null=True,
                                    verbose_name=_("Leave Type"))
     from_date = models.DateField(_("From Date"))
@@ -104,7 +104,7 @@ class LeaveRecord(TimeStamp):
         return self.reason
 
     def __repr__(self):
-        return f"<LeaveRecord(employee={self.employee})>"
+        return f"<LeaveRecord(staff={self.staff})>"
 
     class Meta:
         verbose_name = _("Leave Record")
