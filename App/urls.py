@@ -11,10 +11,12 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
-    path("", include("Authentication.urls")),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
+    # APPS
+    path("accounts/", include("Authentication.urls")),
+
 ]
 
 urlpatterns += [

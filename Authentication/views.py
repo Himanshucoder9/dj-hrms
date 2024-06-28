@@ -15,17 +15,13 @@ def login_view(request):
             staff_id = form.cleaned_data['staff_id']
             password = form.cleaned_data['password']
 
-            print(company_code, staff_id, password)
-
             user = CustomAuthBackend().authenticate(request, company_code=company_code, staff_id=staff_id, password=password)
             if user is not None:
                 login(request, user, backend='Authentication.backends.CustomAuthBackend')
                 return redirect('some_view')  # Redirect to a success page.
             else:
                 messages.error(request, 'Invalid credentials')
-        else:
-            print(form.errors)
     else:
         form = EmployeeLoginForm()
 
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'auth/login.html', {'form': form})
