@@ -1,28 +1,13 @@
-from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from Authentication.managers import UserManager
 from Master.models import TimeStamp
-from Master.myvalidator import mobile_validator, numeric, minimum, maximum, pan_validator
-from General.models import Department, Designation
+from Master.myvalidator import mobile_validator
+from General.models import Department, Designation, CompanyType
 from imagekit.models import ProcessedImageField
-from django.contrib.auth.hashers import check_password, make_password
-from Master.uploader import company_directory_path, expense_directory_path, employee_directory_path
-
-
-class CompanyType(TimeStamp):
-    name = models.CharField(_('Company Type'), max_length=255, unique=True)
-
-    def __str__(self):
-        return self.name
-
-    def __repr__(self):
-        return f"<CompanyType(title={self.name})>"
-
-    class Meta:
-        verbose_name = _('Company Type')
-        verbose_name_plural = _('Company Types')
+from django.contrib.auth.hashers import make_password
+from Master.uploader import company_directory_path, staff_directory_path
 
 
 class Company(TimeStamp):
@@ -90,7 +75,7 @@ class User(AbstractUser, PermissionsMixin):
         verbose_name_plural = _('Users')
 
 
-class Employee(User):
+class Staff(User):
     MARITAL_CHOICES = (
         ('Married', 'Married'),
         ('Single', 'Single'),
@@ -107,7 +92,7 @@ class Employee(User):
         help_text="Alphabets and special characters are not allowed (eg.+911234567890).",
         blank=True, null=True
     )
-    photo = ProcessedImageField(upload_to=employee_directory_path, options={'quality': 70}, blank=True, null=True)
+    photo = ProcessedImageField(upload_to=staff_directory_path, options={'quality': 70}, blank=True, null=True)
     marital_status = models.CharField(_('Marital Status'), max_length=50, choices=MARITAL_CHOICES)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name=_('Department'))
     designation = models.ForeignKey(Designation, on_delete=models.CASCADE, verbose_name=_('Designation'))
@@ -122,67 +107,17 @@ class Employee(User):
         return self.staff_id
 
     def __repr__(self):
-        return f"<Employee(staff_id={self.staff_id})>"
+        return f"<Staff(staff_id={self.staff_id})>"
 
     def save(self, *args, **kwargs):
-        if self.pk is None or not Employee.objects.filter(pk=self.pk).exists():
+        if self.pk is None or not Staff.objects.filter(pk=self.pk).exists():
             self.password = make_password(self.password)
         else:
-            orig = Employee.objects.get(pk=self.pk)
+            orig = Staff.objects.get(pk=self.pk)
             if orig.password != self.password:
                 self.password = make_password(self.password)
         super().save(*args, **kwargs)
-    @classmethod
-    def authenticate(cls, company_code, staff_id, password):
-        try:
-            employee = cls.objects.get(company__company_code=company_code, staff_id=staff_id)
-            if check_password(password, employee.password):
-                return employee
-        except cls.DoesNotExist:
-            return None
 
     class Meta:
-        verbose_name = _('Employee')
-        verbose_name_plural = _('Employees')
-
-
-class Education(models.Model):
-    EDUCATION_CHOICES = (
-        ('10th', '10th'),
-        ('12th', '12th'),
-        ('UG', 'Under Graduation'),
-        ('PG', 'Post Graduation'),
-        ('Other', 'Other'),
-    )
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name=_('Company'))
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name=_('Employee'))
-    education = models.CharField(verbose_name="Education Type", choices=EDUCATION_CHOICES, max_length=15, )
-    score = models.CharField(_('Score'), max_length=50, )
-    document = models.FileField(
-        upload_to='auth/agent/education',
-        validators=[FileExtensionValidator(allowed_extensions=['doc', 'docx', 'pdf', 'png', 'jpg', 'jpeg', 'webp'])],
-        help_text="Upload education certificate..", )
-
-    class Meta:
-        verbose_name = 'Education'
-        verbose_name_plural = 'Educations'
-
-
-class Document(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name=_('Company'))
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name=_('Employee'))
-    aadhar_no = models.CharField(_("Aadhar Number"), max_length=12, null=True,
-                                 validators=[numeric("Aadhar Number"), minimum(12, 'Aadhar '
-                                                                                   'number'),
-                                             maximum(12, 'Aadhar number')],
-                                 help_text="Only numbers are allowed.")
-    pan_no = models.CharField(_("Pan Number"), max_length=10, validators=[pan_validator])
-    aadhar_document = models.FileField(
-        verbose_name=_("Aadhar Document"),
-        upload_to=expense_directory_path,
-        validators=[FileExtensionValidator(allowed_extensions=['doc', 'docx', 'pdf', 'png', 'jpg', 'jpeg', 'webp'])],
-        help_text="Upload document..", )
-
-    class Meta:
-        verbose_name = 'Document'
-        verbose_name_plural = 'Documents'
+        verbose_name = _('Staff')
+        verbose_name_plural = _('Staffs')

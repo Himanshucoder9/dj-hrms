@@ -22,16 +22,16 @@ def achievement_directory_path(instance, filename):
     return f'company_data/{company_code}/achievements/{filename}'
 
 
-def employee_directory_path(instance, filename):
+def staff_directory_path(instance, filename):
     company_code = slugify(instance.company.company_code)
-    return f'company_data/{company_code}/employees/{filename}'
+    return f'company_data/{company_code}/staffs/{filename}'
 
 
-def employee_doc_directory_path(instance, filename):
+def staff_doc_directory_path(instance, filename):
     company_code = slugify(instance.company.company_code)
-    return f'company_data/{company_code}/employees/docs/{filename}'
+    return f'company_data/{company_code}/staffs/docs/{filename}'
 
 
-def employee_bank_directory_path(instance, filename):
+def staff_bank_directory_path(instance, filename):
     company_code = slugify(instance.company.company_code)
-    return f'company_data/{company_code}/employees/bank/{filename}'
+    return f'company_data/{company_code}/staffs/bank/{filename}'

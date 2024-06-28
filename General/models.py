@@ -3,18 +3,18 @@ from django.utils.translation import gettext_lazy as _
 from Master.models import TimeStamp
 
 
-# class Role(TimeStamp):
-#     name = models.CharField(_('Role'), max_length=50, unique=True)
-#
-#     def __str__(self):
-#         return self.name
-#
-#     def __repr__(self):
-#         return f"<Role(title={self.name})>"
-#
-#     class Meta:
-#         verbose_name = _('Role')
-#         verbose_name_plural = _('Roles')
+class CompanyType(TimeStamp):
+    name = models.CharField(_('Company Type'), max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f"<CompanyType(title={self.name})>"
+
+    class Meta:
+        verbose_name = _('Company Type')
+        verbose_name_plural = _('Company Types')
 
 
 class Designation(TimeStamp):

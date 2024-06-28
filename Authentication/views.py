@@ -1,15 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
-
-from .backends import CustomAuthBackend
-from .models import Employee
-from .forms import EmployeeLoginForm
+from Authentication.backends import CustomAuthBackend
+from Authentication.models import Staff
+from Authentication.forms import StaffLoginForm
 
 
 def login_view(request):
     if request.method == 'POST':
-        form = EmployeeLoginForm(request.POST)
+        form = StaffLoginForm(request.POST)
         if form.is_valid():
             company_code = form.cleaned_data['company_code']
             staff_id = form.cleaned_data['staff_id']
@@ -22,6 +21,6 @@ def login_view(request):
             else:
                 messages.error(request, 'Invalid credentials')
     else:
-        form = EmployeeLoginForm()
+        form = StaffLoginForm()
 
     return render(request, 'auth/login.html', {'form': form})

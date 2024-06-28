@@ -5,7 +5,7 @@ from .models import *
 admin.site.register(Company)
 admin.site.register(CompanyType)
 admin.site.register(User)
-admin.site.register(Employee)
+admin.site.register(Staff)
 admin.site.register(Education)
 
 # @admin.register(User)
