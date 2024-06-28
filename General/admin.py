@@ -4,3 +4,4 @@ from .models import *
 
 admin.site.register(Department)
 admin.site.register(Designation)
+admin.site.register(CompanyType)
