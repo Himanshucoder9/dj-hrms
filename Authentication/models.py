@@ -146,10 +146,12 @@ class Staff(QRCodeMixin, User):
     contract_type = models.CharField(_('Contract Type'), max_length=50, choices=CONTRACT_TYPE_CHOICES)
     contract_start_date = models.DateField(_('Contract Start Date'), blank=True, null=True)
     contract_end_date = models.DateField(_('Contract End Date'), blank=True, null=True)
-    experience = models.IntegerField(_('Experience'), blank=True, null=True)
+    experience = models.CharField(_('Experience'), max_length=50, blank=True, null=True)
     blood_group = models.CharField(_('Blood Group'), max_length=50, choices=BLOOD, blank=True, null=True)
     current_address = models.TextField(_('Current Address'))
     permanent_address = models.TextField(_('Permanent Address'))
+    is_handicapped = models.BooleanField(_('Is Handicapped'), default=False)
+    note = models.TextField(_('Note'), blank=True, null=True)
 
     def __str__(self):
         return self.staff_id
