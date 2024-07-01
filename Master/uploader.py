@@ -35,3 +35,8 @@ def staff_doc_directory_path(instance, filename):
 def staff_bank_directory_path(instance, filename):
     company_code = slugify(instance.company.company_code)
     return f'company_data/{company_code}/staffs/bank/{filename}'
+
+
+def stock_directory_path(instance, filename):
+    company_code = slugify(instance.company.company_code)
+    return f'company_data/{company_code}/stocks/order/{filename}'

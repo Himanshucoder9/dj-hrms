@@ -37,7 +37,7 @@ class Expense(TimeStamp):
         verbose_name=_("Bill"),
         upload_to=expense_directory_path,
         validators=[FileExtensionValidator(allowed_extensions=['doc', 'docx', 'pdf', 'png', 'jpg', 'jpeg', 'webp'])],
-        help_text="Upload document..", )
+        help_text="Upload document..", blank=True, null=True)
     note = models.TextField(_("note"), blank=True, null=True)
     is_paid = models.BooleanField(_("is paid"), default=False)
 
