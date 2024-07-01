@@ -182,7 +182,8 @@ class ItemStock(TimeStamp):
 class ItemIssued(TimeStamp):
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name=_('Item'))
-    quantity = models.PositiveIntegerField(_("Quantity"), default=0)
+    in_quantity = models.PositiveIntegerField(_("In Quantity"), default=0)
+    out_quantity = models.PositiveIntegerField(_("Out Quantity"), default=0)
     issued_to = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, related_name='issued_items',
                                   verbose_name=_('Issued to'))
     issued_by = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, related_name='issued_by_items',
