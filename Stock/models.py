@@ -193,7 +193,7 @@ class ItemIssued(TimeStamp):
     note = models.TextField(_("Note"), blank=True, null=True)
 
     def __str__(self):
-        return f'name-{self.item.name},issued_to.{self.issued_to.name}'
+        return f'name-{self.item.name}'
 
     def __repr__(self):
         return f"<ItemIssued(name={self.item.name})>"
