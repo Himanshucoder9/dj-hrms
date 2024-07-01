@@ -40,3 +40,7 @@ def staff_bank_directory_path(instance, filename):
 def stock_directory_path(instance, filename):
     company_code = slugify(instance.company.company_code)
     return f'company_data/{company_code}/stocks/order/{filename}'
+
+def stock_barcode_directory_path(instance, filename):
+    company_code = slugify(instance.company.company_code)
+    return f'company_data/{company_code}/stocks/barcodes/{filename}'
