@@ -2,6 +2,9 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from Master.models import TimeStamp
 from Master.myvalidator import mobile_validator
+from Master.uploader import stock_directory_path
+from django.core.validators import FileExtensionValidator
+
 
 
 # Create your models here.
@@ -97,6 +100,11 @@ class ItemOrder(TimeStamp):
     quantity = models.PositiveIntegerField(_("Quantity"), default=0)
     unit_price = models.PositiveIntegerField(_("Unit Price"), default=0)
     total_amount = models.PositiveIntegerField(_("Total Amount"), default=0)
+    bill = models.FileField(
+        verbose_name=_("Bill"),
+        upload_to=stock_directory_path,
+        validators=[FileExtensionValidator(allowed_extensions=['doc', 'docx', 'pdf', 'png', 'jpg', 'jpeg', 'webp'])],
+        help_text="Upload document..", blank=True, null=True)
     order_date = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICE, default='pending')
 
@@ -132,8 +140,10 @@ class ItemIssued(TimeStamp):
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name=_('Item'))
     quantity = models.PositiveIntegerField(_("Quantity"), default=0)
-    issued_to = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE,related_name='issued_items', verbose_name=_('Issued to'))
-    issued_by = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE,related_name='issued_by_items', verbose_name=_('Issued by'))
+    issued_to = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, related_name='issued_items',
+                                  verbose_name=_('Issued to'))
+    issued_by = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, related_name='issued_by_items',
+                                  verbose_name=_('Issued by'))
     issued_date = models.DateTimeField(_("Issued Date"))
     return_date = models.DateTimeField(_("Return Date"), blank=True, null=True)
     note = models.TextField(_("Note"), blank=True, null=True)
