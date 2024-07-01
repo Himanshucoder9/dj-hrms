@@ -4,6 +4,10 @@ from Master.models import TimeStamp
 from Master.myvalidator import mobile_validator
 from Master.uploader import stock_directory_path
 from django.core.validators import FileExtensionValidator
+import barcode
+from barcode.writer import ImageWriter
+import os
+from django.conf import settings
 
 
 
@@ -76,7 +80,46 @@ class Item(TimeStamp):
     category = models.ForeignKey(ItemCategory, on_delete=models.CASCADE, verbose_name=_('Category'))
     unit = models.ForeignKey(ItemUnit, on_delete=models.CASCADE, verbose_name=_('Unit'))
     description = models.TextField(_("Description"), blank=True, null=True)
+    barcode = models.CharField(_("Barcode"), max_length=255, unique=True, blank=True, null=True)
+    barcode_image = models.ImageField(_("Barcode Image"), upload_to='barcodes/', blank=True, null=True)
 
+    def __str__(self):
+        return f'{self.name} ({self.category.name})'
+
+    def __repr__(self):
+        return f"<Item(name={self.name})>"
+
+    
+    def save(self, *args, **kwargs):
+        if not self.barcode:
+            self.barcode = self.generate_unique_barcode()
+        if not self.barcode_image:
+            self.barcode_image = self.generate_barcode_image()
+        super().save(*args, **kwargs)
+
+    def generate_unique_barcode(self):
+        EAN = barcode.get_barcode_class('ean13')
+        unique = False
+        while not unique:
+            barcode_number = f'{self.company.company_code}{self.id or 0:06d}'.zfill(12)
+            if not Item.objects.filter(barcode=barcode_number).exists():
+                unique = True
+        return barcode_number
+
+    def generate_barcode_image(self):
+        EAN = barcode.get_barcode_class('ean13')
+        barcode_number = self.barcode
+        ean = EAN(barcode_number, writer=ImageWriter())
+        directory = os.path.join(settings.MEDIA_ROOT, f'{self.company.company_code}/stocks/barcodes')
+        print(self.company.company_code)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        filename = f'{barcode_number}'
+        full_path = os.path.join(directory, filename)
+        ean.save(full_path)
+        relative_path = os.path.relpath(full_path, settings.MEDIA_ROOT)
+        return f'{relative_path}.png'
+    
     def __str__(self):
         return f'name-{self.name},category.{self.category.name}'
 
