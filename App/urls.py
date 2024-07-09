@@ -16,6 +16,7 @@ urlpatterns = [
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
     # APPS
     path("accounts/", include("Authentication.urls")),
+    path("", include("General.urls")),
 
 ]
 

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Staff</title>
+</head>
+<body>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ staff_form.as_p }}
+
+        <h3>Education</h3>
+        {{ education_formset.management_form }}
+        {% for form in education_formset %}
+            {{ form.as_p }}
+        {% endfor %}
+
+        <h3>Documents</h3>
+        {{ document_formset.management_form }}
+        {% for form in document_formset %}
+            {{ form.as_p }}
+        {% endfor %}
+
+        <h3>Bank Details</h3>
+        {{ bank_detail_formset.management_form }}
+        {% for form in bank_detail_formset %}
+            {{ form.as_p }}
+        {% endfor %}
+
+        <h3>Social Media</h3>
+        {{ social_media_formset.management_form }}
+        {% for form in social_media_formset %}
+            {{ form.as_p }}
+        {% endfor %}
+
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

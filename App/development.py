@@ -52,6 +52,7 @@ LOCAL_APPS = [
     "Certificate",
     "Event",
     "Expense",
+    "Employee",
     "General",
     "Lead",
     # "Master",

@@ -1,9 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from Master.models import TimeStamp
+import uuid
 
 
 class CompanyType(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_('Company Type'), max_length=255, unique=True)
 
     def __str__(self):
@@ -18,6 +20,7 @@ class CompanyType(TimeStamp):
 
 
 class Designation(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_('Designation'), max_length=50, unique=True)
 
     def __str__(self):
@@ -32,6 +35,7 @@ class Designation(TimeStamp):
 
 
 class Department(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_('Department'), max_length=50, unique=True)
 
     def __str__(self):
