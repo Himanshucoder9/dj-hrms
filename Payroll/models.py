@@ -3,9 +3,11 @@ from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
 from Master.models import TimeStamp
 from decimal import Decimal
+import uuid
 
 
 class StaffBasicPayroll(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     staff = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, verbose_name=_("Staff"))
     basic_salary = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Basic Salary"))
@@ -32,6 +34,7 @@ class StaffBasicPayroll(TimeStamp):
 
 
 class PayrollPeriod(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     start_date = models.DateField(_("Start Date"))
     end_date = models.DateField(_("End Date"))
@@ -49,6 +52,7 @@ class PayrollPeriod(TimeStamp):
 
 
 class PayrollEntry(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     staff = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, verbose_name=_("Staff"))
     payroll_period = models.ForeignKey(PayrollPeriod, on_delete=models.CASCADE, verbose_name=_("Payroll Period"))
@@ -111,6 +115,7 @@ class PayrollEntry(TimeStamp):
 
 
 class PayrollAdjustment(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     staff = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, verbose_name=_("Staff"))
     payroll_period = models.ForeignKey(PayrollPeriod, on_delete=models.CASCADE, verbose_name=_("Payroll Period"))

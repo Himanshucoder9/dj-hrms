@@ -8,11 +8,12 @@ import barcode
 from barcode.writer import ImageWriter
 import os
 from django.conf import settings
-
+import uuid
 
 
 # Create your models here.
 class ItemCategory(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     name = models.CharField(_("Name"), max_length=255, unique=True)
 
@@ -28,6 +29,7 @@ class ItemCategory(TimeStamp):
 
 
 class ItemUnit(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     name = models.CharField(_("Name"), max_length=255, unique=True)
 
@@ -43,6 +45,7 @@ class ItemUnit(TimeStamp):
 
 
 class Shop(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     name = models.CharField(_("Shop Name"), max_length=255)
     phone = models.CharField(
@@ -75,6 +78,7 @@ class Shop(TimeStamp):
 
 
 class Item(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     name = models.CharField(_("Name"), max_length=255)
     category = models.ForeignKey(ItemCategory, on_delete=models.CASCADE, verbose_name=_('Category'))
@@ -82,6 +86,7 @@ class Item(TimeStamp):
     description = models.TextField(_("Description"), blank=True, null=True)
     barcode = models.CharField(_("Barcode"), max_length=255, unique=True, blank=True, null=True)
     barcode_image = models.ImageField(_("Barcode Image"), upload_to='barcodes/', blank=True, null=True)
+    is_returnable = models.BooleanField(_("Is Returnable"), default=True)
 
     def __str__(self):
         return f'{self.name} ({self.category.name})'
@@ -89,7 +94,6 @@ class Item(TimeStamp):
     def __repr__(self):
         return f"<Item(name={self.name})>"
 
-    
     def save(self, *args, **kwargs):
         if not self.barcode:
             self.barcode = self.generate_unique_barcode()
@@ -119,7 +123,7 @@ class Item(TimeStamp):
         ean.save(full_path)
         relative_path = os.path.relpath(full_path, settings.MEDIA_ROOT)
         return f'{relative_path}.png'
-    
+
     def __str__(self):
         return f'name-{self.name},category.{self.category.name}'
 
@@ -137,6 +141,7 @@ class ItemOrder(TimeStamp):
         ('cancel', 'Cancel'),
         ('received', 'Received')
     )
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name=_('Item'))
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, verbose_name=_('Shop'))
@@ -163,6 +168,7 @@ class ItemOrder(TimeStamp):
 
 
 class ItemStock(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name=_('Item'))
     stock_quantity = models.PositiveIntegerField(_("Stock Quantity"), default=0)
@@ -180,16 +186,15 @@ class ItemStock(TimeStamp):
 
 
 class ItemIssued(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name=_('Item'))
-    in_quantity = models.PositiveIntegerField(_("In Quantity"), default=0)
-    out_quantity = models.PositiveIntegerField(_("Out Quantity"), default=0)
+    quantity = models.PositiveIntegerField(_("Quantity"), default=0)
     issued_to = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, related_name='issued_items',
                                   verbose_name=_('Issued to'))
     issued_by = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, related_name='issued_by_items',
                                   verbose_name=_('Issued by'))
     issued_date = models.DateTimeField(_("Issued Date"))
-    return_date = models.DateTimeField(_("Return Date"), blank=True, null=True)
     note = models.TextField(_("Note"), blank=True, null=True)
 
     def __str__(self):
@@ -201,3 +206,27 @@ class ItemIssued(TimeStamp):
     class Meta:
         verbose_name = _("Item Issued")
         verbose_name_plural = _("Item Issues")
+
+
+class ItemReturned(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name=_('Item'))
+    issued_item = models.ForeignKey(ItemIssued, on_delete=models.CASCADE, related_name='returned_items', verbose_name=_('Issued Item'))
+    quantity = models.PositiveIntegerField(_("Quantity"), default=0)
+    returned_to = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, related_name='returned_items',
+                                    verbose_name=_('Returned to'))
+    returned_by = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, related_name='returned_by_items',
+                                    verbose_name=_('Returned by'))
+    return_date = models.DateTimeField(_("Return Date"))
+    note = models.TextField(_("Note"), blank=True, null=True)
+
+    def __str__(self):
+        return f'name-{self.item.name}'
+
+    def __repr__(self):
+        return f"<ItemIssued(name={self.item.name})>"
+
+    class Meta:
+        verbose_name = _("Item Returned")
+        verbose_name_plural = _("Item Returns")

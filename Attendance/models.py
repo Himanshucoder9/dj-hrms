@@ -1,11 +1,13 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from Master.models import TimeStamp
+import uuid
 
 
 # Create your models here.
 
 class BreakType(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_("Name"), max_length=100)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
 
@@ -21,6 +23,7 @@ class BreakType(TimeStamp):
 
 
 class Break(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     staff = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, verbose_name=_("Staff"))
     start_time = models.TimeField(_("Start Time"))
@@ -48,6 +51,7 @@ class Attendance(models.Model):
         ('on_leave', 'On Leave'),
         ('holiday', 'Holiday'),
     )
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     staff = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, verbose_name=_("Staff"))
     date = models.DateField(_("Date"))
@@ -70,6 +74,7 @@ class Attendance(models.Model):
 
 
 class LeaveType(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_("Name"), max_length=100)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
 
@@ -90,6 +95,7 @@ class LeaveRecord(TimeStamp):
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
     )
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     staff = models.ForeignKey('Authentication.Staff', on_delete=models.CASCADE, verbose_name=_("Staff"))
     leave_type = models.ForeignKey(LeaveType, on_delete=models.SET_NULL, blank=True, null=True,
@@ -112,6 +118,7 @@ class LeaveRecord(TimeStamp):
 
 
 class Holiday(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_("Name"), max_length=100)
     date = models.DateField(_("Date"))
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))

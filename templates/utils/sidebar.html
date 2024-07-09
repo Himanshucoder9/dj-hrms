@@ -4,7 +4,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
       <p class="nav-link bg-secondary text-white"><i class="bi bi-speedometer2 text-white"></i> Dashboard</p>
        <li class="nav-item">
-        <a class="nav-link collapsed {% if request.path == '/' %}active{% endif %}" href="{% url 'main:dashboard' %}">
+        <a class="nav-link collapsed {% if request.path == '/' %}active{% endif %}" href="{% url 'general:dashboard' %}">
           <i class="bi bi-caret-right-fill"></i>
           <span>Dashboard</span>
         </a>
@@ -13,23 +13,23 @@
 <!--  Academic  -->
       <p class="nav-link bg-secondary text-white"><i class="bi bi-mortarboard text-white"></i> Academic</p>
       <li class="nav-item">
-        <a class="nav-link collapsed {% if request.path == '/academic/class-add/' or request.path == '/academic/class-detail/' or update_url == 'class_update' %}active{% endif %}" data-bs-target="#class-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-caret-right-fill "></i><span>Class Master</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link collapsed {% if request.path == '/general/company-type/add/' or request.path == '/general/company-type/detail/' or update_url == 'company_type_update' %}active{% endif %}" data-bs-target="#class-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-caret-right-fill "></i><span>Company Type Master</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="class-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+{% comment %} <!--          <li>-->
+<!--            <a href="{% url 'academic:class' %}" class="{% if request.path == '/academic/class-add/' %} active-link{% endif%}">-->
+<!--              <i class="bi bi-circle"></i><span>Add Class</span>-->
+<!--            </a>-->
+<!--          </li>--> {% endcomment %}
           <li>
-            <a href="{% url 'academic:class' %}" class="{% if request.path == '/academic/class-add/' %} active-link{% endif%}">
-              <i class="bi bi-circle"></i><span>Add Class</span>
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'academic:class_detail' %}" class="{% if request.path == '/academic/class-detail/'  %} active-link{% endif%}">
-              <i class="bi bi-circle"></i><span>Class Details</span>
+            <a href="{% url 'general:company_type_detail' %}" class="{% if request.path == '/general/company-type/detail/'  %} active-link{% endif%}">
+              <i class="bi bi-circle"></i><span>Company Type Details</span>
             </a>
           </li>
         </ul>
       </li>
-      <li class="nav-item">
+      {% comment %} <li class="nav-item">
         <a class="nav-link collapsed {% if request.path == '/academic/section-add/' or request.path == '/academic/section-detail/' or update_url == 'section_update' %}active{% endif %}" data-bs-target="#section-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-caret-right-fill"></i><span>Section Master</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -62,8 +62,8 @@
             </a>
           </li>
         </ul>
-      </li>
-      <li class="nav-item">
+      </li> {% endcomment %}
+      {% comment %} <li class="nav-item">
         <a class="nav-link collapsed {% if request.path == '/academic/subject-add/' or request.path == '/academic/subject-detail/' or update_url == 'subject_update' %}active{% endif %}" data-bs-target="#subject-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-caret-right-fill"></i><span>Subject Master</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -96,10 +96,10 @@
             </a>
           </li>
         </ul>
-      </li>
+      </li> {% endcomment %}
 <!--  Expense  -->
       <p class="nav-link bg-secondary text-white"><i class="bi bi-cash text-white"></i> Expense</p>
-      <li class="nav-item">
+      {% comment %} <li class="nav-item">
         <a class="nav-link collapsed {% if request.path == '/expense/expense-head-add/' or request.path == '/expense/expense-head-detail/' or update_url == 'expense_head_update' %}active{% endif %}" data-bs-target="#expense-head-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-caret-right-fill"></i><span>Expense Head Master</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -151,7 +151,7 @@
             </a>
           </li>
         </ul>
-      </li>
+      </li> {% endcomment %}
 
 
     </ul>

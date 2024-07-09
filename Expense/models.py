@@ -5,11 +5,13 @@ from Master.models import TimeStamp
 from Master.myvalidator import alphanumeric, alphabet
 from imagekit.models import ProcessedImageField
 from Master.uploader import expense_directory_path
+import uuid
 
 
 # Create your models here.
 
 class Head(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     expense_head = models.CharField(_("expense head"), max_length=250, validators=[alphanumeric('Expense head')])
     note = models.TextField(_("note"), blank=True, null=True)
@@ -26,6 +28,7 @@ class Head(TimeStamp):
 
 
 class Expense(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey('Authentication.Company', on_delete=models.CASCADE, verbose_name=_("Company"))
     expense_head = models.ForeignKey(Head, on_delete=models.CASCADE, verbose_name="Expense head")
     name = models.CharField(_("name"), max_length=250, validators=[alphabet('Name')])

@@ -11,7 +11,7 @@ class CustomAuthBackend(BaseBackend):
                 if check_password(password, staff.password):
                     return staff
             else:
-                # Handle superuser authentication
+                # Handle superuser auth
                 email = kwargs.get('email')
                 if email:
                     user = Staff.objects.get(email=email, is_superuser=True)

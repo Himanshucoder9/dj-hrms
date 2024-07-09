@@ -6,6 +6,7 @@ from Master.models import TimeStamp
 from Master.myvalidator import mobile_validator, numeric, minimum, maximum, pan_validator
 from imagekit.models import ProcessedImageField
 from Master.uploader import staff_directory_path
+import uuid
 
 
 class Education(TimeStamp):
@@ -16,6 +17,7 @@ class Education(TimeStamp):
         ('PG', 'Post Graduation'),
         ('Other', 'Other'),
     )
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name=_('Company'))
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE, verbose_name=_('Staff'))
     education = models.CharField(verbose_name="Education Type", choices=EDUCATION_CHOICES, max_length=15, )
@@ -31,6 +33,7 @@ class Education(TimeStamp):
 
 
 class Document(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name=_('Company'))
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE, verbose_name=_('Staff'))
     aadhar_no = models.CharField(_("Aadhar Number"), max_length=12, null=True,
@@ -93,6 +96,7 @@ class Document(TimeStamp):
 
 
 class BankDetail(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name=_('Company'))
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE, verbose_name=_('Staff'))
     account_holder_name = models.CharField(_("Account Holder Name"), max_length=255)
@@ -119,6 +123,7 @@ class BankDetail(TimeStamp):
 
 
 class SocialMedia(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name=_('Company'))
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE, verbose_name=_('Staff'))
     linkedin = models.URLField(_("LinkedIn Link"), blank=True, null=True)

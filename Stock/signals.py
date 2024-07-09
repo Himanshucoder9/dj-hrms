@@ -1,6 +1,8 @@
-from django.db.models.signals import post_save, pre_save, post_delete
+from Stock.models import ItemOrder, ItemStock, ItemIssued, ItemReturned
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from Stock.models import ItemOrder,ItemStock,ItemIssued
+from django.core.exceptions import ValidationError
+
 
 @receiver(post_save, sender=ItemOrder)
 def update_stock_on_order(sender, instance, created, **kwargs):
@@ -13,25 +15,50 @@ def update_stock_on_order(sender, instance, created, **kwargs):
 @receiver(post_save, sender=ItemIssued)
 def update_stock_on_issue(sender, instance, created, **kwargs):
     if created:
-        # Update out_quantity in ItemStock
-        item_stock, created = ItemStock.objects.get_or_create(item=instance.item, company=instance.company)
-        item_stock.stock_quantity -= instance.out_quantity
+        item_stock = ItemStock.objects.get(item=instance.item)
+        item_stock.stock_quantity -= instance.quantity
         item_stock.save()
 
-@receiver(post_save, sender=ItemIssued)
+
+@receiver(post_save, sender=ItemReturned)
 def update_stock_on_return(sender, instance, created, **kwargs):
-    if not created and instance.return_date is not None:
-        # Update in_quantity in ItemStock
-        item_stock, created = ItemStock.objects.get_or_create(item=instance.item, company=instance.company)
-        item_stock.stock_quantity += instance.in_quantity
+    if created:
+        item_stock = ItemStock.objects.get(item=instance.item)
+        item_stock.stock_quantity += instance.quantity
         item_stock.save()
 
-@receiver(post_delete, sender=ItemIssued)
-def revert_stock_on_delete(sender, instance, **kwargs):
-    # If an ItemIssued is deleted, revert stock changes
-    item_stock, created = ItemStock.objects.get_or_create(item=instance.item, company=instance.company)
-    item_stock.stock_quantity += instance.out_quantity  # Revert out_quantity
-    if instance.return_date is not None:
-        item_stock.stock_quantity -= instance.in_quantity  # Revert in_quantity if returned
-    item_stock.save()
+        # Decrease the quantity of the corresponding issued item
+        issued_item = instance.issued_item
+        issued_item.quantity -= instance.quantity
+        issued_item.save()
 
+
+@receiver(pre_save, sender=ItemReturned)
+def check_item_returnable(sender, instance, **kwargs):
+    if not instance.item.is_returnable:
+        raise ValidationError(f"The item '{instance.item.name}' is not returnable.")
+
+
+
+
+
+
+
+
+
+
+
+
+# @receiver(post_save, sender=ItemIssued)
+# def notify_low_stock(sender, instance, created, **kwargs):
+#     if created:
+#         item_stock = ItemStock.objects.get(item=instance.item)
+#         if item_stock.stock_quantity <= item_stock.reorder_level:
+#             # Replace with your notification logic, e.g., sending an email or creating a notification record
+#             send_mail(
+#                 'Stock Alert',
+#                 f'Stock of {instance.item.name} is low. Please refill.',
+#                 'from@example.com',
+#                 [instance.item.company.admin_email],  # Adjust recipient based on your setup
+#                 fail_silently=False,
+#             )

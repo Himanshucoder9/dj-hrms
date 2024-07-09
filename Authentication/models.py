@@ -14,6 +14,7 @@ from django.dispatch import receiver
 from io import BytesIO
 from django.core.files import File
 import qrcode
+import uuid
 
 
 class QRCodeMixin(models.Model):
@@ -24,6 +25,7 @@ class QRCodeMixin(models.Model):
 
 
 class Company(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company_code = models.CharField(_("Company Code"), max_length=6, unique=True)
     name = models.CharField(_('Company Name'), max_length=255, unique=True)
     company_type = models.ForeignKey(CompanyType, on_delete=models.SET_NULL, blank=True, null=True,
@@ -71,6 +73,7 @@ class User(AbstractUser, PermissionsMixin):
         ('Other', 'Other'),
     )
     username = None
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     role = models.CharField(_('Role'), max_length=50, choices=ROLE_CHOICES, default='Employee')
     first_name = models.CharField(_('First Name'), max_length=255)
     middle_name = models.CharField(_('Middle Name'), max_length=255, blank=True, null=True)
